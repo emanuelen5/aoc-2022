@@ -23,6 +23,8 @@ print(f"Part 2: {part2}")
 
 EOF
 
+read -p "Paste input data into '$_day/input.txt' and then press enter"
+
 git add $_dir
-git commit -m "Creating empty $_dir"
+git commit -m "Creating $_dir from template"
 
