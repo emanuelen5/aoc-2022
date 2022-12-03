@@ -21,7 +21,6 @@ part2 = None
 
 print(f"Part 1: {part1}")
 print(f"Part 2: {part2}")
-
 EOF
 
 cat <<EOF > $_dir/test.py
@@ -30,7 +29,6 @@ import __init__ as lib
 
 
 tc = unittest.TestCase()
-
 EOF
 
 read -p "Paste input data into '$_day/input.txt' and then press enter"
