@@ -34,6 +34,8 @@ EOF
 
 read -p "Paste input data into '$_day/input.txt' and then press enter"
 
+_branch="day/$@"
+git branch $_branch
+git checkout $_branch
 git add $_dir
 git commit -m "Creating $_dir from template"
-
