@@ -2,8 +2,8 @@ set -x
 
 _dir="day$@"
 if [ -f $_dir/__main__.py ]; then
-	echo "Directory '$_dir' already initialized" >2
-	exit 0
+    echo "Directory '$_dir' already initialized" >2
+    exit 0
 fi
 
 mkdir -p $_dir
@@ -14,7 +14,7 @@ from . import lib
 
 
 with open(Path(__file__).parent.joinpath("input.txt")) as f:
-	data = f.read()
+    data = f.read()
 
 part1 = None
 part2 = None
