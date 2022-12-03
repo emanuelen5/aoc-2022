@@ -23,6 +23,15 @@ print(f"Part 2: {part2}")
 
 EOF
 
+cat <<EOF > $_dir/test.py
+import unittest
+import __init__ as lib
+
+
+tc = unittest.TestCase()
+
+EOF
+
 read -p "Paste input data into '$_day/input.txt' and then press enter"
 
 git add $_dir
