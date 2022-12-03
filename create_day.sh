@@ -10,6 +10,7 @@ mkdir -p $_dir
 touch $_dir/__init__.py $_dir/input.txt
 cat <<EOF > $_dir/__main__.py
 from pathlib import Path
+import __init__ as lib
 
 
 with open(Path(__file__).parent.joinpath("input.txt")) as f:
