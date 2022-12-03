@@ -1,45 +1,22 @@
 set -x
 
 _dir="day$@"
-if [ -f $_dir/__main__.py ]; then
-    echo "Directory '$_dir' already initialized" >2
-    exit 0
+if [ -d $_dir ]; then
+    echo "Directory '$_dir' already created" >2
+    exit 1
 fi
-
-mkdir -p $_dir
-touch $_dir/lib.py $_dir/input.txt
-cat <<EOF > $_dir/__main__.py
-from pathlib import Path
-from . import lib
-
-
-with open(Path(__file__).parent.joinpath("input.txt")) as f:
-    data = f.read()
-
-part1 = None
-part2 = None
-
-print(f"Part 1: {part1}")
-print(f"Part 2: {part2}")
-EOF
-
-cat <<EOF > $_dir/test.py
-from pathlib import Path
-import unittest
-import lib
-
-
-with open(Path(__file__).parent.joinpath("test_input.txt"), 'r') as f:
-    test_input = [line.strip for line in f.readlines()]
-
-
-tc = unittest.TestCase()
-EOF
-
-read -p "Paste input data into '$_day/input.txt' and then press enter"
 
 _branch="day/$@"
 git branch $_branch
+if [ $? -ne 0 ]; then
+    echo "Branch '$_branch' does already exist. Clean up first and delete it to be able to initialize" >2
+    exit 1
+fi
 git checkout $_branch
+
+cp -r template/ $_dir
+
+read -p "Paste input data into '$_day/data/input.txt' and '$_day/data/test_input.txt' and then press Enter to continue... "
+
 git add $_dir
 git commit -m "Creating $_dir from template"
