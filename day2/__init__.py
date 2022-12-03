@@ -10,16 +10,15 @@ def get_score(p1, p2) -> int:
 	p1 = ord(p1) - ord('A')
 	p2 = ord(p2) - ord('X')
 
-	# Draw
 	diff = (p2 - p1) % 3
 
 	if diff == diff_draw:
 		round_score = 3
-	if diff == diff_lose:
+	elif diff == diff_lose:
 		round_score = 0
-	if diff == diff_win:
+	elif diff == diff_win:
 		round_score = 6
-	# Lost
+
 	return round_score + p2 + 1
 
 
