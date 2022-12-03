@@ -2,14 +2,14 @@ set -x
 
 _dir="day$@"
 if [ -d $_dir ]; then
-    echo "Directory '$_dir' already created" >2
+    echo "Directory '$_dir' already created" >&2
     exit 1
 fi
 
 _branch="day/$@"
 git branch $_branch
 if [ $? -ne 0 ]; then
-    echo "Branch '$_branch' does already exist. Clean up first and delete it to be able to initialize" >2
+    echo "Branch '$_branch' does already exist. Clean up first and delete it to be able to initialize" >&2
     exit 1
 fi
 git checkout $_branch
