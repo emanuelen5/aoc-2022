@@ -12,7 +12,11 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
 		mapping[p1][p2] += 1
 
 
-part1 = get_score('A', 'X')
+part1 = 0
+for p1, to in mapping.items():
+	for p2, count in to.items():
+		part1 += count * get_score(p1, p2)
+
 part2 = None
 
 print(f"Part 1: {part1}")
