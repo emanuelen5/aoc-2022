@@ -1,6 +1,6 @@
 import unittest
 
-import __init__ as lib
+import lib
 
 
 tc = unittest.TestCase()

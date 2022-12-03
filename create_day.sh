@@ -7,10 +7,10 @@ if [ -f $_dir/__main__.py ]; then
 fi
 
 mkdir -p $_dir
-touch $_dir/__init__.py $_dir/input.txt
+touch $_dir/lib.py $_dir/input.txt
 cat <<EOF > $_dir/__main__.py
 from pathlib import Path
-import __init__ as lib
+from . import lib
 
 
 with open(Path(__file__).parent.joinpath("input.txt")) as f:
@@ -25,7 +25,7 @@ EOF
 
 cat <<EOF > $_dir/test.py
 import unittest
-import __init__ as lib
+import lib
 
 
 tc = unittest.TestCase()
