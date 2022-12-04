@@ -20,3 +20,10 @@ tc.assertFalse(lib.is_either_fully_contained_within_other(*lib.line_to_ranges(te
 tc.assertTrue(lib.is_either_fully_contained_within_other(*lib.line_to_ranges(test_input[3])))
 tc.assertTrue(lib.is_either_fully_contained_within_other(*lib.line_to_ranges(test_input[4])))
 tc.assertFalse(lib.is_either_fully_contained_within_other(*lib.line_to_ranges(test_input[5])))
+
+tc.assertFalse(lib.has_overlap(*lib.line_to_ranges(test_input[0])))
+tc.assertFalse(lib.has_overlap(*lib.line_to_ranges(test_input[1])))
+tc.assertTrue(lib.has_overlap(*lib.line_to_ranges(test_input[2])))
+tc.assertTrue(lib.has_overlap(*lib.line_to_ranges(test_input[3])))
+tc.assertTrue(lib.has_overlap(*lib.line_to_ranges(test_input[4])))
+tc.assertTrue(lib.has_overlap(*lib.line_to_ranges(test_input[5])))
