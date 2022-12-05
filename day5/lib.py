@@ -56,3 +56,11 @@ def move_stack(cs: crate_stacks_t, count: int, from_: int, to: int) -> None:
     for _ in range(count):
         to_stack.append(from_stack.pop())
     return cs
+
+
+def move_stack_9001(cs: crate_stacks_t, count: int, from_: int, to: int) -> None:
+    from_stack = cs[from_ - 1]
+    to_stack = cs[to - 1]
+    for offset in range(count, 0, -1):
+        to_stack.append(from_stack.pop(-offset))
+    return cs
