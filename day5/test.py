@@ -40,3 +40,4 @@ tc.assertEqual((2, 2, 1), lib.get_move_from_line(test_input[7]))
 cs = [['A'], ['B'], ['C', 'D']]
 tc.assertEqual([['A', 'D'], ['B'], ['C']], lib.move_stack(cs, 1, 3, 1))
 tc.assertEqual([[], ['B', 'D', 'A'], ['C']], lib.move_stack(cs, 2, 1, 2))
+tc.assertEqual([['D', 'A'], ['B'], ['C']], lib.move_stack_9001(cs, 2, 2, 1))
