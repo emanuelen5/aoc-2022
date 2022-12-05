@@ -32,3 +32,11 @@ lib.crate_stack_append(cs, crates)
 tc.assertEqual([['Z', 'N'], ['M', 'C', 'D'], ['P']], cs)
 
 tc.assertEqual("NDP", lib.crate_stack_get_top(cs))
+
+tc.assertEqual((1, 2, 1), lib.get_move_from_line(test_input[5]))
+tc.assertEqual((3, 1, 3), lib.get_move_from_line(test_input[6]))
+tc.assertEqual((2, 2, 1), lib.get_move_from_line(test_input[7]))
+
+cs = [['A'], ['B'], ['C', 'D']]
+tc.assertEqual([['A', 'D'], ['B'], ['C']], lib.move_stack(cs, 1, 3, 1))
+tc.assertEqual([[], ['B', 'D', 'A'], ['C']], lib.move_stack(cs, 2, 1, 2))
