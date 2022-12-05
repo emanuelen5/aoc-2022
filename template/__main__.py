@@ -3,7 +3,7 @@ from . import lib
 
 
 with open(Path(__file__).parent.joinpath("data/input.txt"), 'r', encoding="utf-8") as f:
-    data = f.read()
+    lines = f.read().split("\n")
 
 part1 = None
 part2 = None
