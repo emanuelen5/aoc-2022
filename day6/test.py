@@ -8,3 +8,8 @@ with open(Path(__file__).parent.joinpath("data/test_input.txt"), 'r', encoding="
 
 
 tc = unittest.TestCase()
+tc.assertEqual(7, lib.get_start_of_packet_end(test_input_lines[0]))
+tc.assertEqual(5, lib.get_start_of_packet_end(test_input_lines[1]))
+tc.assertEqual(6, lib.get_start_of_packet_end(test_input_lines[2]))
+tc.assertEqual(10, lib.get_start_of_packet_end(test_input_lines[3]))
+tc.assertEqual(11, lib.get_start_of_packet_end(test_input_lines[4]))
