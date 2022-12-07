@@ -107,3 +107,16 @@ def parse_line(line: str) -> cmd_t:
     else:
         filesize, filename = line.split(" ")
         return ListingFile(int(filesize), filename)
+
+    
+def part1(root_dir: Dir):
+    return sum(d.calculate_size() for d in root_dir.traverse() if d.calculate_size() <= 100000)
+
+
+def part2(root_dir: Dir):
+    total_used_space = root_dir.calculate_size()
+    total_disk_space = 70000000
+    needed_space = 30000000
+    available_space = total_disk_space - total_used_space
+    minimum_space_to_free = needed_space - available_space
+    return min(d.calculate_size() for d in root_dir.traverse() if d.calculate_size() >= minimum_space_to_free)
