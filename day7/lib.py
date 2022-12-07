@@ -8,18 +8,20 @@ class Dir:
     dirname: str
     subdirs: Dict[str, "Dir"] = field(default_factory=lambda: {})
     files: Dict[str, int] = field(default_factory=lambda: {})
+    files_size: int = 0
 
     def add_file(self, filename: str, size: int):
         assert filename not in self.files
         self.files[filename] = size
+        self.files_size += size
     
     def add_subdir(self, dirname: str) -> "Dir":
         assert dirname not in self.subdirs
         self.subdirs[dirname] = subdir = Dir(self, dirname)
         return subdir
-    
+
     def calculate_size(self) -> int:
-        return sum(d.calculate_size() for d in self.subdirs.values()) + sum(v for v in self.files.values())
+        return sum(d.calculate_size() for d in self.subdirs.values()) + self.files_size
     
     @property
     def is_root(self) -> bool:
@@ -35,7 +37,8 @@ class Dir:
         return str(self.parent) + self.dirname + "/"
 
     def traverse(self) -> Iterator["Dir"]:
-        yield from self.subdirs.values()
+        for d in self.subdirs.values():
+            yield from d.traverse()
         yield self
 
 
@@ -79,7 +82,7 @@ class CLI:
         if isinstance(cmd, ListingDir):
             self.cwd_.add_subdir(cmd.name)
         elif isinstance(cmd, ListingFile):
-            self.cwd_.add_file(cmd.size, cmd.name)
+            self.cwd_.add_file(cmd.name, cmd.size)
         elif isinstance(cmd, CommandCd):
             self.cd(cmd.path)
         elif isinstance(cmd, CommandLs):

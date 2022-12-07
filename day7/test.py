@@ -44,3 +44,4 @@ for line in test_input_lines[1:]:
     cli.read_cmd(lib.parse_line(line))
 
 tc.assertEqual(["e", "a", "d", ""], [d.dirname for d in cli.root_dir.traverse()])
+tc.assertEqual({"a", "e"}, set(d.dirname for d in cli.root_dir.traverse() if d.calculate_size() <= 100000))
