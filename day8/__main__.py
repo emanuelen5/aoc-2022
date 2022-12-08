@@ -9,7 +9,7 @@ map = lib.Map.from_input_lines(lines)
 trees = lib.Tree(map)
 
 part1 = trees.get_visibility_count()
-part2 = None
+part2 = trees.get_most_scenic()
 
 print(f"Part 1: {part1}")
 print(f"Part 2: {part2}")

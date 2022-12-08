@@ -43,3 +43,13 @@ test_visibility(2, 2, set())
 test_visibility(3, 2, {"right"})
 
 tc.assertEqual(21, trees.get_visibility_count())
+
+tc.assertEqual(1, trees.get_view_distance(2, 1, lib.Directions.up))
+tc.assertEqual(1, trees.get_view_distance(2, 1, lib.Directions.left))
+tc.assertEqual(2, trees.get_view_distance(2, 1, lib.Directions.right))
+tc.assertEqual(2, trees.get_view_distance(2, 1, lib.Directions.down))
+
+tc.assertEqual(4, trees.get_scenic_score(2, 1))
+tc.assertEqual(8, trees.get_scenic_score(2, 3))
+
+tc.assertEqual(8, trees.get_most_scenic())

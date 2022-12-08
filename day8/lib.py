@@ -1,6 +1,8 @@
 from array import array
+from enum import Enum
 from dataclasses import dataclass
-from typing import List
+import math
+from typing import List, Tuple
 
 
 @dataclass  # For compare method
@@ -34,6 +36,23 @@ class Map:
 
 class BoolMap(Map):
     pass
+
+
+class Directions(Enum):
+    up = "up"
+    down = "down"
+    left = "left"
+    right = "right"
+
+    def to_diff(self) -> Tuple[int, int]:
+        if self is self.up:
+            return (0, -1)
+        elif self is self.down:
+            return (0, 1)
+        elif self is self.left:
+            return (-1, 0)
+        elif self is self.right:
+            return (1, 0)
 
 
 class Tree:
@@ -77,6 +96,26 @@ class Tree:
                     # print("Visible from bottom", j, i, "at height", height)
                     self.visible_from_bottom.set(j, i, height)
                     height_per_col[j] = height
+    
+    def get_view_distance(self, x: int, y: int, direction: Directions) -> int:
+        dx, dy = direction.to_diff()
+        h0 = self.map.at(x, y)
+        view_count = 0
+        x += dx
+        y += dy
+        while (0 <= y < self.map.height) and (0 <= x < self.map.width):
+            view_count += 1
+            if self.map.at(x, y) >= h0:
+                break
+            x += dx
+            y += dy
+        return view_count
+
+    def get_scenic_score(self, x: int, y: int) -> int:
+        return math.prod(self.get_view_distance(x, y, dir) for dir in Directions)
+
+    def get_most_scenic(self) -> int:
+        return max(max(self.get_scenic_score(x, y) for x in range(self.map.width)) for y in range(self.map.height))
 
     def visible(self, x, y) -> bool:
         if (0 < x < self.map.width - 1) and (0 < y < self.map.height - 1):
