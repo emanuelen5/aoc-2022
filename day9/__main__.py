@@ -11,7 +11,8 @@ for dir in lib.Directions.from_lines(lines):
     rope.move_head(dir)
 
 part1 = len(rope.tail.visited_positions)
-part2 = None
+part2 = len(rope.last_tail.visited_positions)
+
 
 print(f"Part 1: {part1}")
 print(f"Part 2: {part2}")

@@ -28,3 +28,14 @@ for dir in lib.Directions.from_lines(test_input_lines):
     rope.move_head(dir)
 
 tc.assertEqual(13, len(rope.tail.visited_positions))
+tc.assertEqual(1, len(rope.last_tail.visited_positions))
+
+# Part 2
+with open(Path(__file__).parent.joinpath("data/test_input2.txt"), 'r', encoding="utf-8") as f:
+    test_input_lines2 = f.read().split("\n")
+
+rope2 = lib.Rope()
+for dir in lib.Directions.from_lines(test_input_lines2):
+    rope2.move_head(dir)
+
+tc.assertEqual(36, len(rope2.last_tail.visited_positions))

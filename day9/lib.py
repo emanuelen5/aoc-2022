@@ -64,11 +64,26 @@ def yield_tail_moves(head: Pos, tail: Pos) -> Iterator[Directions]:
 
 @dataclass
 class Rope:
-    head: Pos = field(default_factory=lambda: Pos())
-    tail: Pos = field(default_factory=lambda: Pos())
+    knots: List[Pos] = field(default_factory=lambda: [Pos() for _ in range(10)])
+
+    @property
+    def head(self) -> Pos:
+        return self.knots[0]
+
+    @property
+    def tail(self) -> Pos:
+        return self.knots[1]
+
+    @property
+    def last_tail(self) -> Pos:
+        return self.knots[-1]
 
     def move_head(self, dir: Directions):
         self.head.move(dir)
-        dirs = list(yield_tail_moves(self.head, self.tail))
-        for i, dir in enumerate(dirs):
-            self.tail.move(dir, partial_move=i < len(dirs) - 1)
+        for head, tail in zip(self.knots, self.knots[1:]):
+            dirs = list(yield_tail_moves(head, tail))
+            if len(dirs) == 0:
+                continue
+            if len(dirs) == 2:
+                tail.move(dirs[0], partial_move=True)
+            tail.move(dirs[-1])
