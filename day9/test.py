@@ -27,5 +27,4 @@ tc.assertEqual({(0, 0)}, rope.tail.visited_positions)
 for dir in lib.Directions.from_lines(test_input_lines):
     rope.move_head(dir)
 
-print(rope.tail.visited_positions)
 tc.assertEqual(13, len(rope.tail.visited_positions))

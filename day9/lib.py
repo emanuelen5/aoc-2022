@@ -41,12 +41,12 @@ class Pos:
     def get_pos(self) -> Tuple[int, int]:
         return self.x, self.y
 
-    def move(self, dir: Directions):
+    def move(self, dir: Directions, partial_move: bool = False):
         dx, dy = dir.to_diff()
         self.x += dx
         self.y += dy
-        self.visited_positions.add(self.get_pos())
-        print("Pos: ", self.x, self.y)
+        if not partial_move:
+            self.visited_positions.add(self.get_pos())
 
     def diff(self, other: "Pos") -> Tuple[int, int]:
         return other.x - self.x, other.y - self.y
@@ -69,5 +69,6 @@ class Rope:
 
     def move_head(self, dir: Directions):
         self.head.move(dir)
-        for dir in yield_tail_moves(self.head, self.tail):
-            self.tail.move(dir)
+        dirs = list(yield_tail_moves(self.head, self.tail))
+        for i, dir in enumerate(dirs):
+            self.tail.move(dir, partial_move=i < len(dirs) - 1)
