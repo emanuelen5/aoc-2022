@@ -49,11 +49,39 @@ def line_to_instruction(line: str) -> instr_t:
 
 
 @dataclass
+class CRT:
+    cols = 40
+    rows = 6
+    cycle: int = 1
+    pixels: List[int] = field(default_factory=lambda: [None] * CRT.cols * CRT.rows, repr=False)
+
+    def run_cycle(self, x: int):
+        crt_col = self.cycle % self.cols
+        pixel_index = self.cycle - 1
+        self.pixels[pixel_index] = x - 1 <= crt_col <= x + 1
+        self.cycle += 1
+    
+    def get_pixel(self, x, y):
+        return self.pixels[y * self.cols + x]
+
+    def __str__(self) -> str:
+        s = ""
+        for y in range(self.rows):
+            s += "|"
+            for x in range(self.cols):
+                pixel = self.get_pixel(x, y)
+                s += " " if pixel is None else "#" if pixel else "."
+            s += "|\n"
+        return s
+
+
+@dataclass
 class State:
     cycle: int = 1
     x: int = 1
     current_instruction: Optional[instr_t] = field(default=None)
     signal_strengths: List[int] = field(default_factory=lambda: [], repr=False)
+    crt: CRT = field(default_factory=lambda: CRT())
 
     def needs_instruction(self) -> bool:
         return self.current_instruction is None or self.current_instruction.is_finished
@@ -67,6 +95,7 @@ class State:
         if self.current_instruction.is_finished:
             self.instruction_semantics(self.current_instruction)
 
+        self.crt.run_cycle(self.x)
         self.cycle += 1
 
     def run_instruction(self, instr: instr_t):

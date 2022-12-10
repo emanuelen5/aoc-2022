@@ -10,7 +10,7 @@ for instr in (lib.line_to_instruction(line) for line in lines):
     state.run_instruction(instr)
 
 part1 = state.calculate_part1()
-part2 = None
 
 print(f"Part 1: {part1}")
-print(f"Part 2: {part2}")
+
+print(state.crt)
