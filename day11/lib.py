@@ -51,11 +51,29 @@ class Monkey:
     name: str
     items: List[int]
     operation: op_t = field(compare=False, repr=False)
-    divisible: int
-    to_if_true: int
-    to_if_false: int
-    monkey_list: List["Monkey"]
+    divisible: int = field(repr=False)
+    to_if_true: int = field(repr=False)
+    to_if_false: int = field(repr=False)
+    monkey_list: List["Monkey"] = field(repr=False)
     inspect_count: int = 0
+
+    def inspect_items(self):
+        # Operation + relief in one
+        self.items = [self.operation(item) // 3 for item in self.items]
+        self.inspect_count += len(self.items)
+    
+    def _decision(self, item: int) -> int:
+        return self.to_if_true if item % self.divisible == 0 else self.to_if_false
+    
+    def throw_items(self):
+        thrown_items = self.items
+        self.items = []
+        for item in thrown_items:
+            monkey = self.monkey_list[self._decision(item)]
+            monkey.receive_item(item)
+    
+    def receive_item(self, item: int):
+        self.items.append(item)
 
     @classmethod
     def _from_lines(cls, id_line: str, items_line: str, operation_line: str, 
@@ -82,3 +100,13 @@ class Monkey:
         for monkey in monkeys:
             monkey_list.append(monkey)
         return monkeys
+
+
+def run_round(monkeys: List[Monkey]):
+    for monkey in monkeys:
+        monkey.inspect_items()
+        monkey.throw_items()
+
+def part1_metric(monkeys: List[Monkey]):
+    inspect_counts = sorted(monkey.inspect_count for monkey in monkeys)
+    return inspect_counts[-2] * inspect_counts[-1]

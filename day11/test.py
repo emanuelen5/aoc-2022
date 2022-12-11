@@ -26,3 +26,14 @@ tc.assertEqual([79, 98], monkeys[0].items)
 tc.assertEqual(23, monkeys[0].divisible)
 tc.assertEqual(2, monkeys[0].to_if_true)
 tc.assertEqual(3, monkeys[0].to_if_false)
+
+lib.run_round(monkeys)
+tc.assertEqual([20, 23, 27, 26], monkeys[0].items)
+tc.assertEqual([2080, 25, 167, 207, 401, 1046], monkeys[1].items)
+tc.assertEqual([], monkeys[2].items)
+tc.assertEqual([], monkeys[3].items)
+
+for _ in range(20-1):
+    lib.run_round(monkeys)
+
+tc.assertEqual(10605, lib.part1_metric(monkeys))
