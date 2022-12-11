@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
+import functools
 from typing import List, Callable
-debug = False
 
 
 class Item:
@@ -57,9 +57,8 @@ class Monkey:
     monkey_list: List["Monkey"] = field(repr=False)
     inspect_count: int = 0
 
-    def inspect_items(self):
-        # Operation + relief in one
-        self.items = [self.operation(item) // 3 for item in self.items]
+    def inspect_items(self, lcm: int, relief_divisor: int = 3):
+        self.items = [(self.operation(item) // relief_divisor) % lcm for item in self.items]
         self.inspect_count += len(self.items)
     
     def _decision(self, item: int) -> int:
@@ -102,11 +101,21 @@ class Monkey:
         return monkeys
 
 
-def run_round(monkeys: List[Monkey]):
+def monkey_lcm(monkeys: List[Monkey]) -> int:
+    return functools.reduce(lambda x, y: x * y, [monkey.divisible for monkey in monkeys])
+
+def run_round_part1(monkeys: List[Monkey]):
+    lcm = monkey_lcm(monkeys)
     for monkey in monkeys:
-        monkey.inspect_items()
+        monkey.inspect_items(lcm)
         monkey.throw_items()
 
-def part1_metric(monkeys: List[Monkey]):
+def run_round_part2(monkeys: List[Monkey]):
+    lcm = monkey_lcm(monkeys)
+    for monkey in monkeys:
+        monkey.inspect_items(lcm, relief_divisor=1)
+        monkey.throw_items()
+
+def metric(monkeys: List[Monkey]):
     inspect_counts = sorted(monkey.inspect_count for monkey in monkeys)
     return inspect_counts[-2] * inspect_counts[-1]
