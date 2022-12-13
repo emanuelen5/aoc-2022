@@ -17,7 +17,7 @@ tc.assertTrue(lib.is_ordered([3], [3, 3]), "Shorter list")
 tc.assertTrue(lib.is_ordered(1, [3]), "One is int, other is list")
 tc.assertFalse(lib.is_ordered([9], [8,7,6]), "Higher value in short list")
 
-packet_pairs = lib.from_lines(test_input_lines)
+packet_pairs = lib.packet_pairs_from_lines(test_input_lines)
 tc.assertTrue(lib.is_ordered(*packet_pairs[0]))
 tc.assertTrue(lib.is_ordered(*packet_pairs[1]))
 tc.assertFalse(lib.is_ordered(*packet_pairs[2]))
@@ -29,3 +29,6 @@ tc.assertFalse(lib.is_ordered(*packet_pairs[7]))
 
 ordered_packet_index_sum = lib.part1(packet_pairs)
 tc.assertEqual(13, ordered_packet_index_sum)
+
+packet_list = lib.packet_pairs_to_list(packet_pairs)
+tc.assertEqual(140, lib.part2(packet_list))
