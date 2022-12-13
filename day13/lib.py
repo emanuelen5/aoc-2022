@@ -9,30 +9,27 @@ def _from_line(packet1_line: str, packet2_line: str) -> Tuple[packet_t, packet_t
 
 
 def from_lines(input_lines: List[str]) -> packet_t:
-    packet_lines = zip(input_lines[0::3], input_lines[1::3])
-    
-    packet_pairs = []
-    for packet1_line, packet2_line in packet_lines:
-        packet_pairs.append(_from_line(packet1_line, packet2_line))
-    return packet_pairs
+    return [_from_line(packet1_line, packet2_line)
+        for packet1_line, packet2_line in zip(input_lines[0::3], input_lines[1::3])]
 
+def packet_diff(left_packet: packet_t, right_packet: packet_t) -> int:
+    if isinstance(left_packet, int) and isinstance(right_packet, int):
+        return left_packet - right_packet
+    elif isinstance(left_packet, List) and isinstance(right_packet, List):
+        for left_subpacket, right_subpacket in zip(left_packet, right_packet):
+            order_diff = packet_diff(left_subpacket, right_subpacket)
+            if order_diff == 0:
+                continue
+            return order_diff
+        return len(left_packet) - len(right_packet)
+    elif isinstance(left_packet, int):
+        return packet_diff([left_packet], right_packet)
+    elif isinstance(right_packet, int):
+        return packet_diff(left_packet, [right_packet])
+    raise ValueError("Unhandled case")
 
 def is_ordered(left_packet: packet_t, right_packet: packet_t) -> bool:
-    if isinstance(left_packet, int) and isinstance(right_packet, int):
-        return left_packet < right_packet
-    elif isinstance(left_packet, List) and isinstance(right_packet, List):
-        if len(left_packet) < len(right_packet):
-            return True
-        elif len(left_packet) == len(right_packet):
-            for left_subpacket, right_subpacket in zip(left_packet, right_packet):
-                if not is_ordered(left_subpacket, right_subpacket):
-                    return False
-            return True
-        return False
-    elif isinstance(left_packet, int):
-        return is_ordered([left_packet], right_packet)
-    elif isinstance(right_packet, int):
-        return is_ordered(left_packet, [right_packet])
+    return packet_diff(left_packet, right_packet) <= 0
 
 
 def part1(packet_pairs: List[Tuple[packet_t, packet_t]]) -> int:
