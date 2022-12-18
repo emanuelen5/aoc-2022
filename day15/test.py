@@ -33,4 +33,8 @@ tc.assertEqual((0, -1), lib.Sensor.create(0, 2, 0, 1).coverage_of_line(0), "No c
 # ]
 # tc.assertEqual(2, lib.part1(test_sensors, 0)
 
+lib.draw(sensors, slice(-4, 27), slice(9, 12))
+
+tc.assertEqual(25, lib.part1(sensors, 9))
 tc.assertEqual(26, lib.part1(sensors, 10))
+tc.assertEqual(27, lib.part1(sensors, 11))

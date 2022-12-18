@@ -46,7 +46,7 @@ class Sensor:
         return sensors
     
     def can_have_sensor(self, pos: Pos) -> bool:
-        return self.manhattan_distance(pos) >= self.distance
+        return self.manhattan_distance(pos) > self.distance
     
     def coverage_of_line(self, y: int) -> slice:
         dy = abs(self.pos.y - y)
@@ -55,7 +55,7 @@ class Sensor:
         if self.distance < dy:
             return (0, -1)
 
-        dx = abs(self.distance - dy)
+        dx = abs(self.distance - dy - 1) + 1
         x_min = self.pos.x - dx
         x_max = self.pos.x + dx
 
@@ -67,6 +67,33 @@ def can_have_sensor(sensors: List[Sensor], pos: Pos) -> bool:
         if not sensor.can_have_sensor(pos):
             return False
     return True
+
+
+def draw(sensors: List[Sensor], xrange: slice, yrange: slice):
+    sensor_positions = [s.pos for s in sensors]
+    beacon_positions = [s.beacon for s in sensors]
+    rows = 3
+    x_numbers = [f"{x:-3}" for x in range(xrange.start, xrange.stop)]
+    for row in range(rows):
+        line = "   "
+        for i, x in enumerate(range(xrange.start, xrange.stop)):
+            if (x % 5) == 0:
+                line += x_numbers[i][row]
+            else:
+                line += " "
+        print(line)
+    for y in range(yrange.start, yrange.stop):
+        line = f"{y:2} "
+        for x in range(xrange.start, xrange.stop):
+            if any(pos.x == x and pos.y == y for pos in sensor_positions):
+                line += "S"
+            elif any(pos.x == x and pos.y == y for pos in beacon_positions):
+                line += "B"
+            elif not can_have_sensor(sensors, Pos(x, y)):
+                line += "#"
+            else:
+                line += "."
+        print(line)
 
 
 def part1(sensors: List[Sensor], y_line: int) -> int:
