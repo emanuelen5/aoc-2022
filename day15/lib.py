@@ -13,6 +13,9 @@ class Pos:
 
     def manhattan_distance(self, pos: "Pos"):
         return abs(self.x - pos.x) + abs(self.y - pos.y)
+    
+    def __hash__(self):
+        return hash((self.x, self.y))
 
 
 @dataclass
@@ -103,4 +106,13 @@ def part1(sensors: List[Sensor], y_line: int) -> int:
         min_x = min(min_x, _min_x)
         max_x = max(max_x, _max_x)
     
-    return sum(1 for x in range(min_x, max_x + 1) if not can_have_sensor(sensors, Pos(x, y_line)))
+    covered = sum(1 for x in range(min_x, max_x + 1) if not can_have_sensor(sensors, Pos(x, y_line)))
+
+    # Remove positions where sensors or beacons already exist
+    duplicates = 0
+    positions = set(s.pos for s in sensors).union(set(s.beacon for s in sensors))
+    for pos in positions:
+        if y_line == pos.y and not can_have_sensor(sensors, Pos(pos.x, pos.y)):
+            duplicates += 1
+
+    return covered - duplicates
